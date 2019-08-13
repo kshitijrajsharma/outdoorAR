@@ -67,10 +67,10 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     private TextView tvCurrentLocation;
     private TextView tvBearing;
     private TextView text;
-    Button click,update,local;
+    Button click, update, local;
     public static TextView data;
-    public static  TextView direction_text;
-    public static double lat1,long1,alt1;
+    public static TextView direction_text;
+    public static double lat1, long1, alt1;
     public static String name1;
     private SensorManager sensorManager;
     private final static int REQUEST_CAMERA_PERMISSIONS_CODE = 11;
@@ -85,10 +85,10 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     boolean isNetworkEnabled;
     boolean locationServiceAvailable;
     private float declination;
-    public static String  buffervalue="200";
+    public static String buffervalue = "200";
     public static List<ARPoint> arPoints;
-    EditText ET,num;
-
+    EditText ET, num;
+    fetchData process;
 
 
     @Override
@@ -102,16 +102,16 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         surfaceView = findViewById(R.id.surface_view);
         tvCurrentLocation = findViewById(R.id.tv_current_location);
         tvBearing = findViewById(R.id.tv_bearing);
-        update=(Button) findViewById(R.id.updatelocation);
-        local=(Button) findViewById(R.id.locallist);
-        text=(TextView) findViewById(R.id.textView);
-        arOverlayView  = new AROverlayView(this);
+        update = (Button) findViewById(R.id.updatelocation);
+        local = (Button) findViewById(R.id.locallist);
+        text = (TextView) findViewById(R.id.textView);
+        arOverlayView = new AROverlayView(this);
 //        arOverlayView.getResponse();
-        click=(Button) findViewById(R.id.button);
-        data=(TextView) findViewById(R.id.fetcheddata);
-        direction_text=(TextView) findViewById(R.id.direction);
-        ET= (EditText) findViewById(R.id.editText);
-//        num=(EditText) findViewById(R.id.editText2);
+        click = (Button) findViewById(R.id.button);
+        data = (TextView) findViewById(R.id.fetcheddata);
+        direction_text = (TextView) findViewById(R.id.direction);
+        ET = (EditText) findViewById(R.id.editText);
+        num=(EditText) findViewById(R.id.editText2);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -123,11 +123,17 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 //        AROverlayView nac = new AROverlayView(ARActivity.this, v);
 //        nac.test();
 
-
-        click.setOnClickListener(new View.OnClickListener(){
+        process = new fetchData();
+        process.setCompleteListener(new fetchData.onRequestCompleteListener() {
             @Override
-            public void onClick(View view){
-                fetchData process= new fetchData();
+            public void onComplete(ArrayList<ARPoint> arPoints) {
+                arOverlayView.loadWithDate(arPoints);
+            }
+        });
+
+        click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 process.execute();
                 Toast.makeText(ARActivity.this, "Button Clicked !", Toast.LENGTH_SHORT).show();
             }
@@ -190,24 +196,24 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         initCamera();
     }
 
-//    private void initCamera() {
-            private void initCamera () {
-                int numCams = Camera.getNumberOfCameras();
-                if(numCams > 0) {
-                    try {
-                        camera = Camera.open();
-                        camera.startPreview();
-                        arCamera.setCamera(camera);
+    //    private void initCamera() {
+    private void initCamera() {
+        int numCams = Camera.getNumberOfCameras();
+        if (numCams > 0) {
+            try {
+                camera = Camera.open();
+                camera.startPreview();
+                arCamera.setCamera(camera);
 
-                        Toast.makeText(this, "Camera found", Toast.LENGTH_LONG).show();
-                        // attempt to get a Camera instance
-                    } catch (Exception e) {
+                Toast.makeText(this, "Camera found", Toast.LENGTH_LONG).show();
+                // attempt to get a Camera instance
+            } catch (Exception e) {
 //                        camera = null;
-                        //                    camera.release();
-                        Toast.makeText(this, "Camera not found", Toast.LENGTH_LONG).show();
-                    }
-                }
+                //                    camera.release();
+                Toast.makeText(this, "Camera not found", Toast.LENGTH_LONG).show();
             }
+        }
+    }
 
     private void reloadSurfaceView() {
         if (surfaceView.getParent() != null) {
@@ -220,7 +226,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     }
 
     private void releaseCamera() {
-        if(camera != null) {
+        if (camera != null) {
             camera.setPreviewCallback(null);
             camera.stopPreview();
             arCamera.setCamera(null);
@@ -343,12 +349,12 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 
     private void initLocationService() {
 
-        if ( Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-            return  ;
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
 
-        try   {
+        try {
             this.locationManager = (LocationManager) this.getSystemService(this.LOCATION_SERVICE);
 
             // Get GPS and network status
@@ -356,8 +362,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             this.isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
 
-
-            if (!isNetworkEnabled && !isGPSEnabled)    {
+            if (!isNetworkEnabled && !isGPSEnabled) {
                 // cannot get location
                 this.locationServiceAvailable = false;
             }
@@ -368,43 +373,44 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                if (locationManager != null)   {
+                if (locationManager != null) {
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     updateLatestLocation();
                 }
             }
 
-            if (isGPSEnabled)  {
+            if (isGPSEnabled) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-                if (locationManager != null)  {
+                if (locationManager != null) {
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     updateLatestLocation();
                 }
             }
-        } catch (Exception ex)  {
+        } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
 
         }
     }
 
     private void updateLatestLocation() {
-        if (arOverlayView !=null && location != null) {
+        if (arOverlayView != null && location != null) {
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MIN_TIME_BW_UPDATES,
                     MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-            location=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             arOverlayView.updateCurrentLocation(location);
             tvCurrentLocation.setText(String.format("Lattitude: %s \nLongitude: %s \nAltitude: %s \nAccuracy: %s m\n",
-                    location.getLatitude(), location.getLongitude(), location.getAltitude(),location.getAccuracy()));
+                    location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy()));
 
 
         }
     }
-    public void updatelocation (View view){
+
+    public void updatelocation(View view) {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 MIN_TIME_BW_UPDATES,
                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
@@ -413,7 +419,6 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         Toast.makeText(ARActivity.this, "Location Changed !", Toast.LENGTH_SHORT).show();
 //        arOverlayView.AROverlay(arPoints);
     }
-
 
 
     @Override
@@ -437,28 +442,30 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     public void onProviderDisabled(String s) {
 
     }
-    public void fromjson(View view){
+
+    public void fromjson(View view) {
 //        Intent intent=new Intent(this, SampleActivity.class);
 //        super.startActivity(intent);
         Toast.makeText(this, "Download Started !", Toast.LENGTH_SHORT).show();
     }
-    public  void localdata (View view){
+
+    public void localdata(View view) {
         try {
             SurveyDBHelper surveyDBHelper = new SurveyDBHelper(ARActivity.this);
             SQLiteDatabase db = surveyDBHelper.getReadableDatabase();
 //            cursor=db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
             Cursor cursor = surveyDBHelper.getSurveyData(db);
             if (cursor.moveToFirst()) {
-                while ( !cursor.isAfterLast()){
+                while (!cursor.isAfterLast()) {
                     String name = cursor.getString(1);
                     String lats = cursor.getString(2);
                     Double lat = Double.parseDouble(lats);
                     String lons = cursor.getString(2);
                     Double lon = Double.parseDouble(lons);
 //                    text.setText("");
-                    text.append("Name: " +name+"\n");
-                    text.append("Lattitude:"+lats+"\n");
-                    text.append("Longitude:"+lons+"\n");
+                    text.append("Name: " + name + "\n");
+                    text.append("Lattitude:" + lats + "\n");
+                    text.append("Longitude:" + lons + "\n");
                     cursor.moveToNext();
                 }
 
@@ -473,43 +480,44 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
                     new String[]{SurveyDBHelper.SURVEY_TABLE_NAME_COLUMN},
                     new int[]{android.R.id.text1},
                     0);
-        }
-        catch (SQLiteException e){
+        } catch (SQLiteException e) {
             Log.v(TAG, "Exception ");
         }
     }
+
     public void setName(String newName) {
         this.buffervalue = newName;
     }
-//    public   void bufferlocation(View view){
-//        buffervalue = num.getText().toString();
-//        setName(buffervalue);
-//        Toast.makeText(ARActivity.this, "Buffer radious :"+buffervalue, Toast.LENGTH_SHORT).show();
-//
-//
-//    }
+    public   void bufferlocation(View view){
+        buffervalue = num.getText().toString();
+        arOverlayView.updateBufferValue(Float.parseFloat(buffervalue));
+        Toast.makeText(ARActivity.this, "Buffer radius :"+buffervalue, Toast.LENGTH_SHORT).show();
 
-    public  void grablocation(View view){
+
+    }
+
+    public void grablocation(View view) {
         new SurveyDBAsyncTask().execute("");
         Toast.makeText(ARActivity.this, "submitted  successfully", Toast.LENGTH_SHORT).show();
 
     }
 
 
-    public void sayhello(){
-            Handler handler= new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+    public void sayhello() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 //                    update.performClick();
-                    Toast.makeText(ARActivity.this, "Wait For GPS to fix...", Toast.LENGTH_SHORT).show();
-                }
-            }, 8000);
-        }
+                Toast.makeText(ARActivity.this, "Wait For GPS to fix...", Toast.LENGTH_SHORT).show();
+            }
+        }, 8000);
+    }
+
     @Override
-    public void onRestart(){
+    public void onRestart() {
         super.onRestart();
-        Log.v(TAG,"check for datarefresh:");
+        Log.v(TAG, "check for datarefresh:");
 //
     }
 
@@ -519,7 +527,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 
         @Override
         protected void onPreExecute() {
-            Log.v(TAG, "Data entered by the user is "+ET.getText()+" "+location.getLatitude()+" "+location.getLongitude());
+            Log.v(TAG, "Data entered by the user is " + ET.getText() + " " + location.getLatitude() + " " + location.getLongitude());
 
             cv = new ContentValues();
             cv.put(SurveyDBHelper.SURVEY_TABLE_NAME_COLUMN, ET.getText().toString());
@@ -555,8 +563,8 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
                 id = db.insert(SurveyDBHelper.SURVEY_TABLE, null, cv);
 
                 db.close();
-            }catch (SQLiteException e){
-                Log.v(TAG, "Exception "+e.getMessage());
+            } catch (SQLiteException e) {
+                Log.v(TAG, "Exception " + e.getMessage());
             }
             return id;
         }
@@ -564,8 +572,8 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         @Override
         protected void onPostExecute(Long id) {
             super.onPostExecute(id);
-            Log.v(TAG, "In onPostExecute and id is "+id);
-            Toast.makeText(getApplicationContext(), "Insert Success"+id, Toast.LENGTH_SHORT).show();
+            Log.v(TAG, "In onPostExecute and id is " + id);
+            Toast.makeText(getApplicationContext(), "Insert Success" + id, Toast.LENGTH_SHORT).show();
         }
     }
 
