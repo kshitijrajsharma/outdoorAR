@@ -444,8 +444,8 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     }
 
     public void fromjson(View view) {
-//        Intent intent=new Intent(this, SampleActivity.class);
-//        super.startActivity(intent);
+        Intent intent=new Intent(this, SampleActivity.class);
+        super.startActivity(intent);
         Toast.makeText(this, "Download Started !", Toast.LENGTH_SHORT).show();
     }
 

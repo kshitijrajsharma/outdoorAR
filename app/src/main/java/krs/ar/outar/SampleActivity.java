@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
+
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -54,7 +57,7 @@ public class SampleActivity extends Activity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                Log.i("Response string", response.body().toString());
+                Log.i("Responsestring", response.body().toString());
                 //Toast.makeText()
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
@@ -75,13 +78,14 @@ public class SampleActivity extends Activity {
             }
         });
     }
-//
-      private void writeTv(String response){
+
+    private void writeTv(String response){
 
         try {
             //getting the whole json object from the response
             JSONObject obj = new JSONObject(response);
             if(obj.optString("status").equals("true")){
+
                 ArrayList<RetroModel> retroModelArrayList = new ArrayList<>();
                 JSONArray dataArray  = obj.getJSONArray("data");
 
@@ -92,9 +96,9 @@ public class SampleActivity extends Activity {
 
                     retroModel.setid(dataobj.getString("id"));
                     retroModel.setName(dataobj.getString("name"));
-                    retroModel.setlat(dataobj.getString("lat"));
-                    retroModel.setlon(dataobj.getString("lon"));
-                    retroModel.setalt(dataobj.getString("alt"));
+                    retroModel.setCountry(dataobj.getString("country"));
+                    retroModel.setCity(dataobj.getString("city"));
+
                     retroModelArrayList.add(retroModel);
 
                 }
@@ -104,7 +108,7 @@ public class SampleActivity extends Activity {
                     String name= retroModelArrayList.get(j).getName();
 
                     textView.setText(textView.getText()+ retroModelArrayList.get(j).getid()+ " "+ retroModelArrayList.get(j).getName()
-                            + " "+ retroModelArrayList.get(j).getlat()+ " "+retroModelArrayList.get(j).getlon()+" \n"+""+retroModelArrayList.get(j).getalt()+"\n");
+                            + " "+ retroModelArrayList.get(j).getCountry()+ " "+retroModelArrayList.get(j).getCity()+" \n");
                 }
 
             }else {
@@ -116,44 +120,5 @@ public class SampleActivity extends Activity {
         }
 
     }
-
-//    public static ArrayList<PointOfInterest> getData() throws JSONException {
-//        JSONArray jsonArray = new JSONArray(data);
-//        ArrayList<PointOfInterest> pointOfInterests = new ArrayList<>();
-//        PointOfInterest pointOfInterest = null;
-//        for (int i = 0; i < jsonArray.length(); i++) {
-//            JSONObject obj = jsonArray.getJSONObject(i);
-//            String label = obj.getString("label");
-//            double lat = obj.getDouble("lat");
-//            double lon = obj.getDouble("lon");
-//
-//            pointOfInterest = new PointOfInterest(lat, lon, label);
-//            pointOfInterests.add(pointOfInterest);
-//        }
-//
-//        return pointOfInterests;
-//    }
-//
-//
-//    public static ArrayList<PointOfInterest> getDataNew() throws JSONException {
-//        JSONArray jsonArray = new JSONArray(Utils.data);
-//        ArrayList<PointOfInterest> pointOfInterests = new ArrayList<>();
-//        PointOfInterest pointOfInterest = null;
-//        for (int i = 0; i < jsonArray.length(); i++) {
-//
-//            JSONObject obj = jsonArray.getJSONObject(i);
-//            String label = obj.getString("name");
-//            double lat = obj.getDouble("lat");
-//            double lon = obj.getDouble("long");
-//
-//            pointOfInterest = new PointOfInterest(lat, lon, label);
-//            pointOfInterests.add(pointOfInterest);
-//
-//        }
-//
-//        return pointOfInterests;
-//
-//
-//    }
 
 }
