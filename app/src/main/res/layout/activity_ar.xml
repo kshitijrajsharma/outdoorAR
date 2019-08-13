@@ -61,8 +61,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:text="Save To Phone"
+        android:padding="0dp"
+        android:textSize="10dp"/>
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
         android:text="Download Data"
-        android:onClick="fromjson"
+        android:layout_marginTop="150dp"
         android:padding="0dp"
         android:textSize="10dp"/>
 
@@ -80,7 +88,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_gravity="left"
         android:textColor="@android:color/white"
         android:id="@+id/fetcheddata"/>
 
@@ -137,7 +145,25 @@
         android:textColor="@android:color/black"
         android:background="@android:color/white"/>
 
-
+    <!--<EditText-->
+        <!--android:id="@+id/editText2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:inputType="text"-->
+        <!--android:textColor="@android:color/black"-->
+        <!--android:background="@android:color/white"-->
+        <!--/>-->
+    <!--<Button-->
+        <!--android:id="@+id/button3"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="left"-->
+        <!--android:text="Buffer"-->
+        <!--android:onClick="bufferlocation"-->
+        <!--android:padding="0dp"-->
+        <!--android:textSize="10dp"-->
+        <!--android:layout_marginTop="50dp"/>-->
 
 
 </FrameLayout>

@@ -3,12 +3,15 @@ package krs.ar.outar.model;
 public class PointOfInterest {
     private double lat;
     private double lon;
-    private String label;
+    private double alt;
+    private String name;
 
-    public PointOfInterest(double lat, double lon, String label) {
+    public PointOfInterest(String name,double lat, double lon,double alt) {
+        this.name = name;
         this.lat = lat;
         this.lon = lon;
-        this.label = label;
+        this.alt=alt;
+
     }
 
     public double getLat() {
@@ -27,12 +30,12 @@ public class PointOfInterest {
         this.lon = lon;
     }
 
-    public String getLabel() {
-        return label;
+    public String getname() {
+        return name;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setname(String name) {
+        this.name = name;
     }
 
 

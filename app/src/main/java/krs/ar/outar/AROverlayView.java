@@ -1,6 +1,5 @@
 package krs.ar.outar;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,25 +8,15 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.opengl.Matrix;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 import krs.ar.outar.helper.LocationHelper;
 import krs.ar.outar.model.ARPoint;
-import krs.ar.outar.model.DataGenerator;
-import krs.ar.outar.model.PointOfInterest;
 
 
-public class AROverlayView extends View {
+public  class AROverlayView extends View {
 
     Context context;
     private float[] rotatedProjectionMatrix = new float[16];
@@ -43,7 +32,7 @@ public class AROverlayView extends View {
             double[] lat= {28.2544,28.2536,28.2532,28.2544,28.2554,28.254,28.2552,28.2546,28.2543,28.2538};
             double[] lon= {83.9752,83.9759,83.9758,83.9783,83.9772,83.9766,83.9766,83.9764,83.9774,83.9777};
             double[] alt={909.832,906.697,906.846,918.702,916.00,915.144,915.104,914.078,913.271,913.902};
-            for(int i=0;i<8;i++){
+            for(int i=0;i<name.length;i++){
                 add(new ARPoint(name[i],lat[i], lon[i],alt[i]));
             }
         }};
@@ -101,7 +90,9 @@ public class AROverlayView extends View {
 
             // cameraCoordinateVector[2] is z, that always less than 0 to display on right position
             // if z > 0, the point will display on the opposite
-            float value=200;
+//            ARActivity obj= new ARActivity();
+//            float value= Integer.parseInt(obj.buffervalue);
+            float value=1000;
 //            float value1=Float.valueOf(ET.getText().toString());
 //            if(value1>10){
 //                value=value1;

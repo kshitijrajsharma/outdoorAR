@@ -2,7 +2,7 @@ package krs.ar.outar;
 
 public class RetroModel {
 
-    private String name, country, city, id;
+    private String name, lat, lon, id,alt;
 
     public String getid() {
         return id;
@@ -20,19 +20,26 @@ public class RetroModel {
         this.name = name;
     }
 
-    public String getCountry() {
-        return country;
+    public String getlat() {
+        return lat;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setlat(String lon) {
+        this.lat = lon;
     }
 
-    public String getCity() {
-        return city;
+    public String getlon() {
+        return lon;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setlon(String city) {
+        this.lon = lon;
+    }
+    public String getalt() {
+        return alt;
+    }
+
+    public void setalt(String alt) {
+        this.alt = alt;
     }
 }

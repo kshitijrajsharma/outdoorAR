@@ -85,8 +85,9 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     boolean isNetworkEnabled;
     boolean locationServiceAvailable;
     private float declination;
+    public static String  buffervalue="200";
     public static List<ARPoint> arPoints;
-    EditText ET;
+    EditText ET,num;
 
 
 
@@ -110,6 +111,11 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         data=(TextView) findViewById(R.id.fetcheddata);
         direction_text=(TextView) findViewById(R.id.direction);
         ET= (EditText) findViewById(R.id.editText);
+//        num=(EditText) findViewById(R.id.editText2);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
 
 
 //        View v = getLayoutInflater().inflate(R.layout.activity_ar, null);
@@ -118,14 +124,14 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 //        nac.test();
 
 
-//        click.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view){
-//                fetchData process= new fetchData();
-//                process.execute();
-//                Toast.makeText(ARActivity.this, "Button Clicked !", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        click.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                fetchData process= new fetchData();
+                process.execute();
+                Toast.makeText(ARActivity.this, "Button Clicked !", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -279,7 +285,12 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             //Heading
             float[] orientation = new float[3];
             getOrientation(rotatedProjectionMatrix, orientation);
-            double bearing = Math.toDegrees(orientation[0]) + declination;
+
+//            Toast.makeText(ARActivity.this, "Orientation"+orientation[0],   Toast.LENGTH_SHORT).show();
+//            double bearing = Math.toDegrees(orientation[0]);
+//            double bearing = Math.toDegrees(orientation[0]) + declination;
+            double bearing = (int) (Math.toDegrees(SensorManager.getOrientation(rotatedProjectionMatrix, orientation)[0]) + 360) % 360;
+//            Toast.makeText(ARActivity.this, "bearing"+bearing,   Toast.LENGTH_SHORT).show();
             tvBearing.setText(String.format("Bearing: %s", bearing));
             double degree = bearing;
 
@@ -427,8 +438,8 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 
     }
     public void fromjson(View view){
-        Intent intent=new Intent(this, SampleActivity.class);
-        super.startActivity(intent);
+//        Intent intent=new Intent(this, SampleActivity.class);
+//        super.startActivity(intent);
         Toast.makeText(this, "Download Started !", Toast.LENGTH_SHORT).show();
     }
     public  void localdata (View view){
@@ -467,6 +478,16 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             Log.v(TAG, "Exception ");
         }
     }
+    public void setName(String newName) {
+        this.buffervalue = newName;
+    }
+//    public   void bufferlocation(View view){
+//        buffervalue = num.getText().toString();
+//        setName(buffervalue);
+//        Toast.makeText(ARActivity.this, "Buffer radious :"+buffervalue, Toast.LENGTH_SHORT).show();
+//
+//
+//    }
 
     public  void grablocation(View view){
         new SurveyDBAsyncTask().execute("");
@@ -491,6 +512,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         Log.v(TAG,"check for datarefresh:");
 //
     }
+
     private class SurveyDBAsyncTask extends AsyncTask<String, Void, Long> {
 
         ContentValues cv;

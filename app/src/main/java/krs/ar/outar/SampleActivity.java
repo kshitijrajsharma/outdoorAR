@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -95,9 +92,9 @@ public class SampleActivity extends Activity {
 
                     retroModel.setid(dataobj.getString("id"));
                     retroModel.setName(dataobj.getString("name"));
-                    retroModel.setCountry(dataobj.getString("country"));
-                    retroModel.setCity(dataobj.getString("city"));
-
+                    retroModel.setlat(dataobj.getString("lat"));
+                    retroModel.setlon(dataobj.getString("lon"));
+                    retroModel.setalt(dataobj.getString("alt"));
                     retroModelArrayList.add(retroModel);
 
                 }
@@ -107,7 +104,7 @@ public class SampleActivity extends Activity {
                     String name= retroModelArrayList.get(j).getName();
 
                     textView.setText(textView.getText()+ retroModelArrayList.get(j).getid()+ " "+ retroModelArrayList.get(j).getName()
-                            + " "+ retroModelArrayList.get(j).getCountry()+ " "+retroModelArrayList.get(j).getCity()+" \n");
+                            + " "+ retroModelArrayList.get(j).getlat()+ " "+retroModelArrayList.get(j).getlon()+" \n"+""+retroModelArrayList.get(j).getalt()+"\n");
                 }
 
             }else {

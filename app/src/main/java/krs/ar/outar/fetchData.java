@@ -22,20 +22,25 @@ import java.util.HashMap;
 import java.util.List;
 
 import krs.ar.outar.model.ARPoint;
+import krs.ar.outar.model.PointOfInterest;
 
 
 public class fetchData extends AsyncTask<Void,Void,Void> {
+//    ArrayList<PointOfInterest> pointOfInterests = new ArrayList<>();
+//    PointOfInterest pointOfInterest = null;
     public static String data ="";
+    public static String id;
     public  static String name;
-    public static String lat;
-    public static String lon;
-    public static String alt;
+    public static Double lat;
+    public static Double lon;
+    public static Double alt;
     public static String dataParsed = "";
     String singleParsed ="";
     @Override
     protected Void doInBackground(Void... voids) {
+
         try {
-            URL url = new URL("https://api.myjson.com/bins/6dc4d");
+            URL url = new URL("https://api.myjson.com/bins/vnkq3");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -48,18 +53,21 @@ public class fetchData extends AsyncTask<Void,Void,Void> {
             JSONArray JA = new JSONArray(data);
             for(int i =0 ;i <JA.length(); i++){
                 JSONObject JO = (JSONObject) JA.get(i);
+//                id=JO.getString("id");
+//                name= JO.getString(("name"));
+//                lat= JO.getDouble(("lat"));
+//                lon=JO.getDouble("long");
+//                alt=JO.getDouble("alt");
+//                pointOfInterest = new PointOfInterest(name,lat,lon,alt);
+//                pointOfInterests.add(pointOfInterest);
 
-                name= JO.getString(("name"));
-                lat= JO.getString(("lat"));
-                lon=JO.getString("long");
-                alt=JO.getString("country");
+                singleParsed =  "ID:" + JO.get("id") + "\n"+
+                        "Name:" + JO.get("name") + "\n"+
+                        "Lat:" + JO.get("lat") + "\n"+
+                        "Lon:" + JO.get("lon") + "\n"+
+                        "Altitude:" + JO.get("alt") + "\n";
 
-//                singleParsed =  "Name:" + JO.get("name") + "\n"+
-//                        "Password:" + JO.get("password") + "\n"+
-//                        "Contact:" + JO.get("contact") + "\n"+
-//                        "Country:" + JO.get("country") + "\n";
-
-//                dataParsed = dataParsed + singleParsed +"\n" ;
+                dataParsed = dataParsed + singleParsed +"\n" ;
 
 
             }
@@ -110,8 +118,8 @@ public class fetchData extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void aVoid) {
 
         super.onPostExecute(aVoid);
-        appendData(name);
-        ARActivity.data.setText(this.name);
+        appendData(dataParsed);
+        ARActivity.data.setText(dataParsed);
 
 
     }
