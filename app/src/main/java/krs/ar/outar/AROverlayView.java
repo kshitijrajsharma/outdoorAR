@@ -123,7 +123,7 @@ public class AROverlayView extends View {
 
             float obj = (currentLocation).bearingTo(arPoints.get(1).getLocation());
 //            canvas.drawLine(startx,starty,endx,endy, newpaint);
-            canvas.drawText("i am from " + obj, canvas.getWidth() / 4, canvas.getHeight() - 50, newpaint);
+//            canvas.drawText("i am from " + obj, canvas.getWidth() / 4, canvas.getHeight() - 50, newpaint);
             if (error < 0) {
                 error = -error;
             }

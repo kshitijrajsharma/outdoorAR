@@ -102,13 +102,13 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         surfaceView = findViewById(R.id.surface_view);
         tvCurrentLocation = findViewById(R.id.tv_current_location);
         tvBearing = findViewById(R.id.tv_bearing);
-        update = (Button) findViewById(R.id.updatelocation);
+//        update = (Button) findViewById(R.id.updatelocation);
         local = (Button) findViewById(R.id.locallist);
         text = (TextView) findViewById(R.id.textView);
         arOverlayView = new AROverlayView(this);
 //        arOverlayView.getResponse();
         click = (Button) findViewById(R.id.button);
-        data = (TextView) findViewById(R.id.fetcheddata);
+//        data = (TextView) findViewById(R.id.fetcheddata);
         direction_text = (TextView) findViewById(R.id.direction);
         ET = (EditText) findViewById(R.id.editText);
         num=(EditText) findViewById(R.id.editText2);
@@ -135,7 +135,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             @Override
             public void onClick(View view) {
                 process.execute();
-                Toast.makeText(ARActivity.this, "Button Clicked !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ARActivity.this, "Download Started !", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -490,6 +490,9 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     }
     public   void bufferlocation(View view){
         buffervalue = num.getText().toString();
+        if(buffervalue==null){
+            Toast.makeText(ARActivity.this, "Please Enter Buffer Radius", Toast.LENGTH_SHORT).show();
+        }
         arOverlayView.updateBufferValue(Float.parseFloat(buffervalue));
         Toast.makeText(ARActivity.this, "Buffer radius :"+buffervalue, Toast.LENGTH_SHORT).show();
 

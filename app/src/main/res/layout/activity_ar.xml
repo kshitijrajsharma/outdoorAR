@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_ar"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -29,9 +29,9 @@
         android:id="@+id/tv_current_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_marginLeft="20dp"
         android:textSize="12dp"
+        android:layout_below="@id/tv_bearing"
         android:textColor="@android:color/white"
 
     />
@@ -43,6 +43,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:textSize="15dp"
+        android:layout_centerHorizontal="true"
         android:textColorHighlight="@color/colorPrimary"
         android:textColor="@android:color/white"
         />
@@ -53,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="10dp"
+        android:layout_below="@id/tv_current_location"
         android:textColor="@android:color/white"
         />
 
@@ -62,6 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:text="Save To Phone"
+        android:layout_below="@id/button3"
+        android:layout_alignParentRight="true"
         android:padding="0dp"
         android:textSize="10dp"/>
     <Button
@@ -70,27 +74,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:text="Download Data"
-        android:layout_marginTop="150dp"
+        android:layout_alignParentRight="true"
         android:padding="0dp"
         android:textSize="10dp"/>
 
-    <Button
-        android:id="@+id/updatelocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="50dp"
-        android:onClick="updatelocation"
-        android:text="Update"
-        android:padding="0dp"
-        android:textSize="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:textColor="@android:color/white"
-        android:id="@+id/fetcheddata"/>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="left"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:id="@+id/fetcheddata"/>-->
 
 
 
@@ -106,8 +99,8 @@
         android:id="@+id/enter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/button"
         android:onClick="updatelocation"
         android:text="Force Update"
         android:padding="0dp"
@@ -116,8 +109,8 @@
         android:id="@+id/locallist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginTop="100dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/enter"
         android:onClick="localdata"
         android:text="Local"
         android:padding="0dp"
@@ -130,6 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="Record Point"
+        android:layout_alignParentBottom="true"
         android:onClick="grablocation"
         android:padding="0dp"
         android:textSize="10dp"/>
@@ -139,7 +133,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Name:"
-        android:layout_marginBottom="50dp"
+        android:textSize="14dp"
+       android:layout_above="@id/button2"
         android:layout_gravity="bottom"
         android:inputType="text"
         android:textColor="@android:color/black"
@@ -147,10 +142,13 @@
 
     <EditText
         android:id="@+id/editText2"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
+        android:hint="Radius:"
+        android:layout_alignParentRight="true"
+        android:inputType="number"
+        android:textSize="14dp"
+        android:layout_above="@id/button4"
         android:textColor="@android:color/black"
         android:background="@android:color/white"
         />
@@ -158,12 +156,12 @@
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
+        android:layout_alignParentRight="true"
         android:text="Buffer"
         android:onClick="bufferlocation"
-        android:padding="0dp"
         android:textSize="10dp"
-        android:layout_marginTop="50dp"/>
+        android:layout_alignParentBottom="true"
+        />
 
 
-</FrameLayout>
+</RelativeLayout>
