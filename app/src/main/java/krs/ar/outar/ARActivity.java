@@ -403,7 +403,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
                     MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             arOverlayView.updateCurrentLocation(location);
-            tvCurrentLocation.setText(String.format("Lattitude: %s \nLongitude: %s \nAltitude: %s \nAccuracy: %s m\n",
+            tvCurrentLocation.setText(String.format("Latitude: %s \nLongitude: %s \nAltitude: %s \nAccuracy: %s m\n",
                     location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy()));
 
 
@@ -455,20 +455,24 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             SQLiteDatabase db = surveyDBHelper.getReadableDatabase();
 //            cursor=db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
             Cursor cursor = surveyDBHelper.getSurveyData(db);
+            ArrayList<ARPoint> arPoints = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
+
                     String name = cursor.getString(1);
                     String lats = cursor.getString(2);
                     Double lat = Double.parseDouble(lats);
-                    String lons = cursor.getString(2);
+                    String lons = cursor.getString(3);
                     Double lon = Double.parseDouble(lons);
 //                    text.setText("");
-                    text.append("Name: " + name + "\n");
-                    text.append("Lattitude:" + lats + "\n");
-                    text.append("Longitude:" + lons + "\n");
+                    if(lat!=null && lon!=null ){
+                        arPoints.add(new ARPoint(name, lat, lon, 0));
+                    }
+
+                    text.setText("Showing Local Data");
                     cursor.moveToNext();
                 }
-
+                arOverlayView.loadWithlocal(arPoints);
                 //Get the data
 
 //                add(new ARPoint(name, lat, lon, 0));
@@ -531,7 +535,6 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         @Override
         protected void onPreExecute() {
             Log.v(TAG, "Data entered by the user is " + ET.getText() + " " + location.getLatitude() + " " + location.getLongitude());
-
             cv = new ContentValues();
             cv.put(SurveyDBHelper.SURVEY_TABLE_NAME_COLUMN, ET.getText().toString());
             cv.put(SurveyDBHelper.SURVEY_TABLE_EMAIL_COLUMN, location.getLatitude());
