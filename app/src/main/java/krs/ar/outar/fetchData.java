@@ -44,6 +44,7 @@ public class fetchData extends AsyncTask<Void, Void, ArrayList<ARPoint>> {
         ArrayList<ARPoint> arPoints = new ArrayList<>();
         try {
             URL url = new URL("https://api.myjson.com/bins/vnkq3");
+//            File myFile = new File("storage/emulated/0/amap/myfile.json");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -110,7 +111,7 @@ public class fetchData extends AsyncTask<Void, Void, ArrayList<ARPoint>> {
     @Override
     protected void onPostExecute(ArrayList<ARPoint> arPoints) {
         super.onPostExecute(arPoints);
-        appendData(dataParsed);
+        appendData(data);
         listener.onComplete(arPoints);
     }
 

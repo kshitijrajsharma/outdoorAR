@@ -28,16 +28,14 @@ public class AROverlayView extends View {
     public AROverlayView(Context context) {
         super(context);
         this.context = context;
-//        arPoints = new ArrayList<ARPoint>() {{
-//            String[] name;
-//            name = new String[]{"football ground", "goal post", "hostelgate", "girlshostel", "Newparking", "Civil Building", "RCC", "Electronics&Computer", "Mechanical Dep", "Canteen"};
-//            double[] lat = {28.2544, 28.2536, 28.2532, 28.2544, 28.2554, 28.254, 28.2552, 28.2546, 28.2543, 28.2538};
-//            double[] lon = {83.9752, 83.9759, 83.9758, 83.9783, 83.9772, 83.9766, 83.9766, 83.9764, 83.9774, 83.9777};
-//            double[] alt = {909.832, 906.697, 906.846, 918.702, 916.00, 915.144, 915.104, 914.078, 913.271, 913.902};
-//            for (int i = 0; i < name.length; i++) {
-//                add(new ARPoint(name[i], lat[i], lon[i], alt[i]));
-//            }
-//        }};
+            String[] name;
+            name = new String[]{"football ground", "goal post", "hostelgate", "girlshostel", "Newparking", "Civil Building", "RCC", "Electronics&Computer", "Mechanical Dep", "Canteen"};
+            double[] lat = {28.2544, 28.2536, 28.2532, 28.2544, 28.2554, 28.254, 28.2552, 28.2546, 28.2543, 28.2538};
+            double[] lon = {83.9752, 83.9759, 83.9758, 83.9783, 83.9772, 83.9766, 83.9766, 83.9764, 83.9774, 83.9777};
+            double[] alt = {909.832, 906.697, 906.846, 918.702, 916.00, 915.144, 915.104, 914.078, 913.271, 913.902};
+            for (int i = 0; i < name.length; i++) {
+                arPoints.add(new ARPoint(name[i], lat[i], lon[i], alt[i]));
+            }
     }
 
     public void updateRotatedProjectionMatrix(float[] rotatedProjectionMatrix) {

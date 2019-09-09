@@ -104,8 +104,8 @@ public class SampleActivity extends Activity {
                 }
 
                 for (int j = 0; j < retroModelArrayList.size(); j++){
-                    String  id = retroModelArrayList.get(j).getid();
-                    String name= retroModelArrayList.get(j).getName();
+//                    String  id = retroModelArrayList.get(j).getid();
+//                    String name= retroModelArrayList.get(j).getName();
 
                     textView.setText(textView.getText()+ retroModelArrayList.get(j).getid()+ " "+ retroModelArrayList.get(j).getName()
                             + " "+ retroModelArrayList.get(j).getCountry()+ " "+retroModelArrayList.get(j).getCity()+" \n");
