@@ -79,6 +79,13 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 10 meters
     private static final long MIN_TIME_BW_UPDATES = 0;//1000 * 60 * 1; // 1 minute
 
+    private SensorManager mSensorManager;
+
+    // Accelerometer and magnetometer sensors, as retrieved from the
+    // sensor manager.
+    private Sensor mSensorAccelerometer;
+    private Sensor mSensorMagnetometer;
+
     private LocationManager locationManager;
     public Location location;
     boolean isGPSEnabled;
@@ -90,6 +97,9 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     EditText ET, num;
     fetchData process;
 
+    private float[] mAccelerometerData = new float[3];
+    private float[] mMagnetometerData = new float[3];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +107,11 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ar);
         sayhello();
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
         sensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);
         cameraContainerLayout = findViewById(R.id.camera_container_layout);
         surfaceView = findViewById(R.id.surface_view);
@@ -116,6 +131,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
                 this.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
+
 
 
 //        View v = getLayoutInflater().inflate(R.layout.activity_ar, null);
@@ -239,18 +255,18 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         sensorManager.registerListener(this,
                 sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
                 SENSOR_DELAY_NORMAL);
-//        sensorManager.registerListener(this, sensorManager
-//                        .getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-//                SensorManager.SENSOR_DELAY_UI);
-//
-//        sensorManager.registerListener(this, sensorManager
-//                        .getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-//                SensorManager.SENSOR_DELAY_UI);
+        if (mSensorAccelerometer != null) {
+            mSensorManager.registerListener(this, mSensorAccelerometer,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        if (mSensorMagnetometer != null) {
+            mSensorManager.registerListener(this, mSensorMagnetometer,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-
 
 //        updateLatestLocation();
         if (sensorEvent.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
@@ -290,13 +306,13 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 
             //Heading
             float[] orientation = new float[3];
-            getOrientation(rotatedProjectionMatrix, orientation);
+            SensorManager.getOrientation(rotatedProjectionMatrix, orientation);
 
 //            Toast.makeText(ARActivity.this, "Orientation"+orientation[0],   Toast.LENGTH_SHORT).show();
 //            double bearing = Math.toDegrees(orientation[0]);
 //            double bearing = Math.toDegrees(orientation[0]) + declination;
             double bearing = (int) (Math.toDegrees(SensorManager.getOrientation(rotatedProjectionMatrix, orientation)[0]) + 360) % 360;
-//            Toast.makeText(ARActivity.this, "bearing"+bearing,   Toast.LENGTH_SHORT).show();
+            Toast.makeText(ARActivity.this, "bearing"+bearing,   Toast.LENGTH_SHORT).show();
             tvBearing.setText(String.format("Bearing: %s", bearing));
             double degree = bearing;
 
