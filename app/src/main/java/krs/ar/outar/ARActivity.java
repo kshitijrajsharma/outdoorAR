@@ -312,7 +312,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 //            double bearing = Math.toDegrees(orientation[0]);
 //            double bearing = Math.toDegrees(orientation[0]) + declination;
             double bearing = (int) (Math.toDegrees(SensorManager.getOrientation(rotatedProjectionMatrix, orientation)[0]) + 360) % 360;
-            Toast.makeText(ARActivity.this, "bearing"+bearing,   Toast.LENGTH_SHORT).show();
+//            Toast.makeText(ARActivity.this, "bearing"+bearing,   Toast.LENGTH_SHORT).show();
             tvBearing.setText(String.format("Bearing: %s", bearing));
             double degree = bearing;
 
