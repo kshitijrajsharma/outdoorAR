@@ -67,6 +67,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     private TextView tvCurrentLocation;
     private TextView tvBearing;
     private TextView text;
+    private TextView buffermessage;
     Button click, update, local;
     public static TextView data;
     public static TextView direction_text;
@@ -120,6 +121,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 //        update = (Button) findViewById(R.id.updatelocation);
         local = (Button) findViewById(R.id.locallist);
         text = (TextView) findViewById(R.id.textView);
+        buffermessage = (TextView) findViewById(R.id.buffer);
         arOverlayView = new AROverlayView(this);
 //        arOverlayView.getResponse();
         click = (Button) findViewById(R.id.button);
@@ -152,6 +154,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             public void onClick(View view) {
                 process.execute();
                 Toast.makeText(ARActivity.this, "Download Started !", Toast.LENGTH_SHORT).show();
+                text.setText("Showing Downloaded Data");
             }
         });
 
@@ -320,34 +323,37 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
 
             Log.i(TAG, String.valueOf(degree));
 
-            if (degree == 0 && degree < 45 || degree >= 315
+            if (degree == 0 && degree < 23 || degree >= 338
                     && degree == 360) {
-                direction_text.setText("You are: Northbound");
+                direction_text.setText("N");
             }
 
-            if (degree >= 45 && degree < 90) {
-                direction_text.setText("You are: NorthEastbound");
+            if (degree >= 23 && degree < 76) {
+                direction_text.setText("NE");
             }
 
-            if (degree >= 90 && degree < 135) {
-                direction_text.setText("You are: Eastbound");
+            if (degree >= 76 && degree < 113) {
+                direction_text.setText("E");
             }
 
-            if (degree >= 135 && degree < 180) {
-                direction_text.setText("You are: SouthEastbound");
+            if (degree >= 113 && degree < 158) {
+                direction_text.setText("SE");
             }
 
-            if (degree >= 180 && degree < 225) {
-                direction_text.setText("You are: SouthWestbound");
+            if (degree >= 158 && degree < 203) {
+                direction_text.setText("S");
             }
 
-            if (degree >= 225 && degree < 270) {
-                direction_text.setText("You are: Westbound");
+            if (degree >= 203 && degree < 248) {
+                direction_text.setText("SW");
             }
 
-            if (degree >= 270 && degree < 315) {
-                direction_text.setText("You are: NorthWestbound");
+            if (degree >= 248 && degree < 293) {
+                direction_text.setText("W");
 
+            }
+            if(degree>=293 && degree<338){
+                direction_text.setText("NW");
             }
 
         }
@@ -421,6 +427,9 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             arOverlayView.updateCurrentLocation(location);
             tvCurrentLocation.setText(String.format("Latitude: %s \nLongitude: %s \nAltitude: %s \nAccuracy: %s m\n",
                     location.getLatitude(), location.getLongitude(), location.getAltitude(), location.getAccuracy()));
+            if(location.getAccuracy()>=15){
+                tvCurrentLocation.setText(String.format("GPS Accuracy is >=15\nPlease Improve Accuracy\nAccuracy: %s m",location.getAccuracy()));
+            }
 
 
         }
@@ -479,10 +488,12 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
                     String lats = cursor.getString(2);
                     Double lat = Double.parseDouble(lats);
                     String lons = cursor.getString(3);
+                    String alts = cursor.getString(4);
                     Double lon = Double.parseDouble(lons);
+                    Double alt = Double.parseDouble(alts);
 //                    text.setText("");
-                    if(lat!=null && lon!=null ){
-                        arPoints.add(new ARPoint(name, lat, lon, 0));
+                    if(lat!=null && lon!=null && alt!=null ){
+                        arPoints.add(new ARPoint(name, lat, lon,alt));
                     }
 
                     text.setText("Showing Local Data");
@@ -515,6 +526,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         }
         arOverlayView.updateBufferValue(Float.parseFloat(buffervalue));
         Toast.makeText(ARActivity.this, "Buffer radius :"+buffervalue, Toast.LENGTH_SHORT).show();
+        buffermessage.setText("Buffer:"+buffervalue+"m");
 
 
     }
@@ -555,6 +567,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             cv.put(SurveyDBHelper.SURVEY_TABLE_NAME_COLUMN, ET.getText().toString());
             cv.put(SurveyDBHelper.SURVEY_TABLE_EMAIL_COLUMN, location.getLatitude());
             cv.put(SurveyDBHelper.SURVEY_TABLE_AGE_COLUMN, location.getLongitude());
+            cv.put(SurveyDBHelper.SURVEY_TABLE_ALTITUDE_COLUMN, location.getAltitude());
 
 
             super.onPreExecute();

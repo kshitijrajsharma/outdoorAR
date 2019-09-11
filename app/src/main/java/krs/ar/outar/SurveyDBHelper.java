@@ -15,6 +15,7 @@ public class SurveyDBHelper extends SQLiteOpenHelper {
     public static final String SURVEY_TABLE_NAME_COLUMN="name";
     public static final String SURVEY_TABLE_EMAIL_COLUMN="lat";
     public static final String SURVEY_TABLE_AGE_COLUMN="long";
+    public static final String SURVEY_TABLE_ALTITUDE_COLUMN="altitude";
     public static final String SURVEY_TABLE_LICENSE_COLUMN="license";
 
     public SurveyDBHelper(Context context) {
@@ -60,7 +61,8 @@ public class SurveyDBHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE "+SURVEY_TABLE+" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     +SURVEY_TABLE_NAME_COLUMN+" TEXT, "
                     +SURVEY_TABLE_EMAIL_COLUMN+" REAL, "
-                    +SURVEY_TABLE_AGE_COLUMN+" REAL);"
+                    +SURVEY_TABLE_AGE_COLUMN+" REAL, "
+                    +SURVEY_TABLE_ALTITUDE_COLUMN+" REAL);"
             );
 
         }
@@ -88,7 +90,8 @@ public class SurveyDBHelper extends SQLiteOpenHelper {
                 "_id",
                 SURVEY_TABLE_NAME_COLUMN,
                 SURVEY_TABLE_EMAIL_COLUMN,
-                SURVEY_TABLE_AGE_COLUMN
+                SURVEY_TABLE_AGE_COLUMN,
+                SURVEY_TABLE_ALTITUDE_COLUMN,
 
         };
 

@@ -146,6 +146,7 @@ public class AROverlayView extends View {
     }
 
     public void updateBufferValue(float buffervalue) {
+
         this.value = buffervalue;
     }
 }
