@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -36,6 +38,7 @@ import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Switch;
@@ -95,11 +98,14 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     private float declination;
     public static String buffervalue = "200";
     public static List<ARPoint> arPoints;
+    private View main;
+    private ImageView imageView;
     EditText ET, num;
     fetchData process;
 
     private float[] mAccelerometerData = new float[3];
     private float[] mMagnetometerData = new float[3];
+
 
 
     @Override
@@ -158,6 +164,18 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
             }
         });
 
+//        main = findViewById(R.id.main);
+        imageView = (ImageView) findViewById(R.id.imageView);
+        Button btn = (Button) findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bitmap b = Screenshot.takescreenshotOfRootView(imageView);
+                imageView.setImageBitmap(b);
+//                main.setBackgroundColor(Color.parseColor("#999999"));
+            }
+        });
+
     }
 
 
@@ -176,6 +194,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         releaseCamera();
         super.onPause();
     }
+
 
     public void requestCameraPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
