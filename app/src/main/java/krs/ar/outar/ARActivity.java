@@ -246,8 +246,8 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
                 Toast.makeText(this, "Camera found", Toast.LENGTH_LONG).show();
                 // attempt to get a Camera instance
             } catch (Exception e) {
-//                        camera = null;
-                //                    camera.release();
+//                        ic_launcher = null;
+                //                    ic_launcher.release();
                 Toast.makeText(this, "Camera not found", Toast.LENGTH_LONG).show();
             }
         }
