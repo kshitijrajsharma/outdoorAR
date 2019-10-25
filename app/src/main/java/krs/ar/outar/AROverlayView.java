@@ -71,14 +71,12 @@ public class AROverlayView extends View {
         drawpaint.setColor(Color.BLACK);
         drawpaint.setStyle(Paint.Style.STROKE);
         drawpaint.setStrokeJoin(Paint.Join.ROUND);
-
         paint.setStyle(Paint.Style.FILL);
         newpaint.setColor(Color.CYAN);
         newpaint.setTextSize(60);
         paint.setColor(Color.WHITE);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         paint.setTextSize(35);
-
         for (int i = 0; i < arPoints.size(); i++) {
             float[] currentLocationInECEF = LocationHelper.WSG84toECEF(currentLocation);
             float[] pointInECEF = LocationHelper.WSG84toECEF(arPoints.get(i).getLocation());
@@ -88,7 +86,6 @@ public class AROverlayView extends View {
             float dist = currentLocation.distanceTo(arPoints.get(i).getLocation());
             String distance = "" + dist + "m";
             Matrix.multiplyMV(cameraCoordinateVector, 0, rotatedProjectionMatrix, 0, pointInENU, 0);
-
             // cameraCoordinateVector[2] is z, that always less than 0 to display on right position
             // if z > 0, the point will display on the opposite
 //            ARActivity obj= new ARActivity();
@@ -141,6 +138,10 @@ public class AROverlayView extends View {
         Log.i("SceneForm", response.size() + " count");
     }
     public void loadWithlocal(ArrayList<ARPoint> response) {
+        arPoints.clear();
+        arPoints.addAll(response);
+    }
+    public void loadmountain(ArrayList<ARPoint> response) {
         arPoints.clear();
         arPoints.addAll(response);
     }

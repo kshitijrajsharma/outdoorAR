@@ -71,7 +71,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
     private TextView tvBearing;
     private TextView text;
     private TextView buffermessage;
-    Button click, update, local;
+    Button click, update, local,mountain;
     public static TextView data;
     public static TextView direction_text;
     public static double lat1, long1, alt1;
@@ -126,6 +126,7 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         tvBearing = findViewById(R.id.tv_bearing);
 //        update = (Button) findViewById(R.id.updatelocation);
         local = (Button) findViewById(R.id.locallist);
+        mountain=(Button) findViewById(R.id.mountaindata);
         text = (TextView) findViewById(R.id.textView);
         buffermessage = (TextView) findViewById(R.id.buffer);
         arOverlayView = new AROverlayView(this);
@@ -533,6 +534,25 @@ public class ARActivity extends AppCompatActivity implements SensorEventListener
         } catch (SQLiteException e) {
             Log.v(TAG, "Exception ");
         }
+    }
+    public void mountaindata(View view) {
+        Toast.makeText(this, "Mountain data !", Toast.LENGTH_SHORT).show();
+        text.setText("Showing Mountain Data");
+            ArrayList<ARPoint> arPoints = new ArrayList<>();
+            String[] name;
+            name = new String[]{"Nuptse Mountain", "Ngadi Chuli", "Himalchuli Mountain", "Annapurna II", "Annapurna Mount", "Manasalu Mountain", "Dhaulagiri Mount", "Kanchanjanga Mount", "Yunam Peak", "Mount Everest","Machhapuchre"};
+            double[] lat = {27.966389, 28.503332, 28.434168, 28.535833, 28.596111,28.549444, 28.697710, 27.702414, 28.598316, 27.986065,28.495};
+            double[] lon = {86.889999, 84.567497, 84.637497, 84.121391, 83.820274, 84.561943, 83.486145, 88.147881, 83.931061, 86.922623,83.949167};
+//            double[] alt = {909.832, 906.697, 906.846, 918.702, 916.00, 915.144, 915.104, 914.078, 913.271, 913.902};
+            for (int i = 0; i < name.length; i++) {
+                arPoints.add(new ARPoint(name[i], lat[i], lon[i], 0));
+            }
+
+//                        arPoints.add(new ARPoint(name, lat, lon,alt));
+                arOverlayView.loadmountain(arPoints);
+                //Get the data
+
+//                add(new ARPoint(name, lat, lon, 0));
     }
 
     public void setName(String newName) {
